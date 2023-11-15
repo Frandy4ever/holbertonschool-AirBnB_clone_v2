@@ -5,30 +5,23 @@ Starts a Flask web application.
 
 from flask import Flask, render_template
 from models import storage
-from models.state import State
-from models.amenity import Amenity
 
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def teardown_appcontext(exception):
-    """
-    Remove the current SQLAlchemy Session after each request.
-    """
-    storage.close()
-
-
-@app.route('/hbnb_filters', strict_slashes=False)
+@app.route("/hbnb_filters", strict_slashes=False)
 def hbnb_filters():
-    """
-    Display a HTML page like 6-index.html, with additional requirements.
-    """
-    states = sorted(list(storage.all(State).values()), key=lambda x: x.name)
-    amenities = sorted(list(storage.all(Amenity).values()),
-                       key=lambda x: x.name)
+    """Displays the main HBnB filters HTML page."""
+    states = storage.all("State")
+    amenities = storage.all("Amenity")
+    return render_template("10-hbnb_filters.html",
+                           states=states, amenities=amenities)
 
-    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
+
+@app.teardown_appcontext
+def teardown(exception):
+    """Remove the current SQLAlchemy session."""
+    storage.close()
 
 
 if __name__ == "__main__":
