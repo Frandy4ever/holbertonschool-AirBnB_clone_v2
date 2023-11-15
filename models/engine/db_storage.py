@@ -74,3 +74,9 @@ class DBStorage:
     def close(self):
         """Remove method on private session"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """Retrieve an object from the database by its ID"""
+        if cls and id:
+            return self.__session.query(cls).get(id)
+        return None
