@@ -6,11 +6,11 @@
     <TITLE>HBNB</TITLE>
 </HEAD>
 <BODY>
-{% if state is mapping %}
+{% if state is iterable %}
     <H1>States</H1>
     <UL>
-    {% for s in state.values()|sort(attribute="name") %}
-        <LI>{{ s.id }}: <B>{{ s.name }}</B></LI>
+    {% for place in state.values()|sort(attribute="name") %}
+        <LI>{{ place.id }}: <B>{{ place.name }}</B></LI>
     {% endfor %}
     </UL>
 {% elif state is defined %}
