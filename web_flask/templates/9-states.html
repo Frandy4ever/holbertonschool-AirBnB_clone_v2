@@ -6,7 +6,7 @@
     <TITLE>HBNB</TITLE>
 </HEAD>
 <BODY>
-{% if state is iterable %}
+{% if state is mapping %}
     <H1>States</H1>
     <UL>
     {% for place in state.values()|sort(attribute="name") %}
