@@ -4,7 +4,6 @@ Script that starts a Flask web application
 """
 from flask import Flask, render_template
 from models import storage
-from models.state import State
 
 app = Flask(__name__)
 
@@ -21,7 +20,7 @@ def state_id(id):
     """Display a HTML page with cities of a specific State"""
     for state in storage.all('State').values():
         if state.id == id:
-            return render_template('9-states.html', state=states)
+            return render_template('9-states.html', state=state)
     return render_template('9-states.html')
 
 
