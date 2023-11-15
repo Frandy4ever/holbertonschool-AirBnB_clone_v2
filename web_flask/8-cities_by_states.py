@@ -19,9 +19,12 @@ def close_session(exception):
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
     """Display a HTML page with a list of all State objects and their cities"""
-    states = storage.all(State).values()
-    sorted_states = sorted(states, key=lambda x: x.name)
-    return render_template('9-cities_by_states.html', states=sorted_states)
+    try:
+        states = storage.all(State).values()
+        sorted_states = sorted(states, key=lambda x: x.name)
+        return render_template('9-cities_by_states.html', states=sorted_states)
+    except Exception as e:
+        return f"An error occurred: {str(e)}", 500
 
 
 if __name__ == '__main__':
