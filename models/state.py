@@ -10,22 +10,25 @@ from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
-    """Representation of state """
-    __tablename__ = 'states'  # Define __tablename__ outside the conditional block
+    """
+    State class
+    """
+    __tablename__ = 'states'
 
-    if models.storage_t == "db":
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", backref="state")
+    name = Column(String(128), nullable=False)
+
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        cities = relationship("City", backref="state",
+                              cascade="all, delete-orphan")
     else:
-        name = ""
-        cities = []
-
-
-def cities(self):
-    """Getter method to return list of City objects"""
-    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
-        city_list = []
-        for city in models.storage.all(City).values():
-            if city.state_id == self.id:
-                city_list.append(city)
-        return city_list
+        @property
+        def cities(self):
+            """
+            Getter attribute cities that returns the list of City instances with
+            state_id equals to the current State.id
+            """
+            city_list = []
+            for city in list(models.storage.all(City).values()):
+                if city.state_id == self.id:
+                    city_list.append(city)
+            return city_list
